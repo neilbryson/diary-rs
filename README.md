@@ -1,0 +1,4 @@
+# diary-rs
+
+## License
+MIT
