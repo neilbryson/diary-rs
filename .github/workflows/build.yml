@@ -14,7 +14,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Install rustup
-        run: curl https://sh.rustup.rs -sSf | sh
-      - name: Cargo build
-        run: cargo build
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
