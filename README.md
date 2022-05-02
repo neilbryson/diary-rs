@@ -2,7 +2,6 @@
 
 ## Requirements
 - [Rust](https://www.rust-lang.org/)
-- `libsqlite3-dev` (install from package manager)
 
 ## Run locally
 ```bash
