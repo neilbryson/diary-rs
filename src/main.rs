@@ -9,6 +9,9 @@ use db::Db;
 enum Commands {
     /// Lists diary entries
     List,
+    Add {
+        content: String,
+    },
 }
 
 /// A command line diary program!
@@ -23,6 +26,8 @@ struct Cli {
 fn main() {
     let db = Db::new();
     let args = Cli::parse();
+    let dmy_fmt = "[day padding:none] [month repr:long] [year]";
+    let datetime_fmt = "[day padding:none] [month repr:long] [year] [hour]:[minute]:[second]";
 
     match args.command {
         Commands::List => {
@@ -32,9 +37,6 @@ fn main() {
             }
 
             for entry in result.unwrap().iter() {
-                let dmy_fmt = "[day padding:none] [month repr:long] [year]";
-                let datetime_fmt =
-                    "[day padding:none] [month repr:long] [year] [hour]:[minute]:[second]";
                 let date = Datetime::format(entry.date_created.as_str(), &dmy_fmt).unwrap();
                 let date_created =
                     Datetime::format(entry.date_created.as_str(), &datetime_fmt).unwrap();
@@ -50,6 +52,9 @@ Modified on {}",
                     date, entry.content, date_created, date_modified
                 )
             }
+        }
+        Commands::Add { content } => {
+            db.add(content);
         }
     }
 }

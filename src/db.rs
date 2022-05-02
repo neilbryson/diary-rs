@@ -1,5 +1,5 @@
 use dirs::home_dir;
-use rusqlite::{Connection, Result};
+use rusqlite::{params, Connection, Result};
 use std::process::exit;
 
 pub struct Db {
@@ -40,16 +40,18 @@ impl Db {
             Err(_) => exit(1),
         };
 
-        connection.execute(
-            "CREATE TABLE IF NOT EXISTS diary (
+        connection
+            .execute(
+                "CREATE TABLE IF NOT EXISTS diary (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 date TEXT NOT NULL,
                 content TEXT,
                 date_created TEXT NOT NULL,
                 date_modified TEXT NOT NULL
             )",
-            [],
-        ).unwrap();
+                [],
+            )
+            .unwrap();
 
         Self { connection }
     }
@@ -75,5 +77,27 @@ impl Db {
         }
 
         Ok(diary_entries)
+    }
+
+    pub fn add(&self, content: String) {
+        // TODO
+    }
+
+    fn entry_exists(&self, date: String) -> Result<bool> {
+        let statement = &mut self
+            .connection
+            .prepare("SELECT * FROM diary WHERE date = ?1 LIMIT 1")?;
+
+        let diary_iter = statement.query_map(params![date], |row| {
+            Ok(DiaryEntry {
+                id: row.get(0)?,
+                date: row.get(1)?,
+                content: row.get(2)?,
+                date_modified: row.get(3)?,
+                date_created: row.get(4)?,
+            })
+        })?;
+
+        Ok(diary_iter.count() > 0)
     }
 }
