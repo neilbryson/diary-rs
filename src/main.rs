@@ -1,10 +1,10 @@
+mod commands;
 mod datetime;
 mod db;
-mod commands;
 
 use clap::Parser;
+use commands::{CommandTypes, Commands};
 use db::Db;
-use commands::{Commands, CommandTypes};
 
 /// A command line diary program!
 #[derive(Parser, Debug)]
