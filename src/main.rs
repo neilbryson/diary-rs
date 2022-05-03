@@ -36,7 +36,14 @@ fn main() {
                 return;
             }
 
-            for entry in result.unwrap().iter() {
+            let diary_entries = result.unwrap();
+
+            if diary_entries.len() == 0 {
+                println!("No diary entries yet. Start writing one today!");
+                return;
+            }
+
+            for entry in diary_entries.iter() {
                 let date = Datetime::format(entry.date_created.as_str(), &dmy_fmt).unwrap();
                 let date_created =
                     Datetime::format(entry.date_created.as_str(), &datetime_fmt).unwrap();
