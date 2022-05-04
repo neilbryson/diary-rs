@@ -108,12 +108,12 @@ impl Db {
             .connection
             .prepare("SELECT * FROM diary WHERE date = ?1 LIMIT 1")?;
 
-        let mut count = 0;
-        statement.query_row(params![&date], |_| {
-            count += 1;
-            Ok(())
-        })?;
+        let mut rows = statement.query(params![&date])?;
 
-        Ok(count > 0)
+        if let Some(_) = rows.next()? {
+            return Ok(true);
+        }
+
+        Ok(false)
     }
 }

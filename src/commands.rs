@@ -21,7 +21,7 @@ impl Commands {
             CommandTypes::Add { content } => {
                 let add = db.add(content);
                 if add.is_err() {
-                    println!("Unable to add")
+                    println!("Unable to add due to \"{}\"", add.unwrap_err().to_string());
                 }
             }
         }
