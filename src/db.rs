@@ -9,7 +9,7 @@ pub struct Db {
 
 #[derive(Debug)]
 pub struct DiaryEntry {
-    pub id: u32,
+    pub id: i32,
     pub date: String,
     pub content: String,
     pub date_created: String,
